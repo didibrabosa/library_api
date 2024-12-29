@@ -1,7 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, Field
+import ulid
 
 class User(BaseModel):
-    id: str
+    id: str = Field(default_factory=lambda: str(ulid.new()))
     name: str
-    email: str
+    email: EmailStr
     password: str
