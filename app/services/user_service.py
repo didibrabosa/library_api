@@ -19,3 +19,11 @@ class UserService:
     def get_all_users(self) -> List[User]:
         self.logger.info(f"Getting all Users")
         return self.repository.get_all_users()
+    
+    def update_user(self, id: str, user: User) -> User:
+        self.logger.info(f"Updated User with this id={id}")
+        return self.repository.update_user(id, user)
+    
+    def delete_user(self, id: str):
+        self.logger.info(f"Deleting User with id={id}")
+        self.repository.delete_user(id)
