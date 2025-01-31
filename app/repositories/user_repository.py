@@ -1,29 +1,30 @@
 import logging
 from typing import List
 from psycopg2 import DatabaseError, IntegrityError
-from app.services.db import get_db_connection
+from psycopg2._psycopg import connection
 from app.entities.user import User
 
+
 class UserRepository:
-    def __init__(self):
+    def __init__(self, db_connection: connection):
         self.logger = logging.getLogger(__name__)
-        self.db = get_db_connection()
+        self.db = db_connection()
 
     def create_user(self, user: User) -> User:
         self.logger.info("Starting operation to insert User in DataBase.")
         try:
             with self.db.cursor() as cursor:
                 cursor.execute(
-                """
-                INSERT INTO users (id, name, email, password, created_at, users_status)
-                VALUES (%s, %s, %s, %s, NOW(), TRUE);
-                """,
-            (user.id, user.name, user.email, user.password),
-        )
+                    """
+                    INSERT INTO users (id, name, email, password, created_at, users_status)
+                    VALUES (%s, %s, %s, %s, NOW(), TRUE);
+                    """,
+                    (user.id, user.name, user.email, user.password),
+                )
             self.db.commit()
             self.logger.info(f"User {user.name} successfully inserted.")
             return user
-        
+
         except IntegrityError as ex:
             self.db.rollback()
             self.logger.error(f"Integrity error while inserting User. User data: {user}. Details: {ex}")
@@ -33,7 +34,7 @@ class UserRepository:
             self.logger.error(f"Failed to created User in DataBase: {ex}")
             raise
 
-    def get_user_by_id(self, id: str)  -> User:
+    def get_user_by_id(self, id: str) -> User:
         self.logger.info("Getting an User in DataBase")
         try:
             with self.db.cursor() as cursor:
@@ -73,7 +74,7 @@ class UserRepository:
             raise
 
     def update_user(self, id: str, user: User) -> User:
-        self.logger.info(f"Updating User in DataBase")
+        self.logger.info("Updating User in DataBase")
         try:
             with self.db.cursor() as cursor:
                 cursor.execute(
@@ -102,7 +103,7 @@ class UserRepository:
             raise
 
     def delete_user(self, id: str):
-        self.logger.info(f"Deleting User in DataBase")
+        self.logger.info("Deleting User in DataBase")
         try:
             with self.db.cursor() as cursor:
                 cursor.execute(
