@@ -10,21 +10,21 @@ class UserService:
         self.repository = storage
 
     def create_user(self, user: User):
-        self.logger.info(f"Creating User with this data={user}")
+        self.logger.info("Creating User...")
         return self.repository.create_user(user)
 
     def get_user_by_id(self, id: str) -> User:
-        self.logger.info(f"Getting customer with this id={id}")
+        self.logger.info("Catching customer...")
         return self.repository.get_user_by_id(id)
 
     def get_all_users(self) -> List[User]:
-        self.logger.info(f"Getting all Users")
+        self.logger.info("Catching all Users...")
         return self.repository.get_all_users()
 
     def update_user(self, id: str, user: User) -> User:
-        self.logger.info(f"Updated User with this id={id}")
+        self.logger.info("Updating User...")
         return self.repository.update_user(id, user)
 
     def delete_user(self, id: str):
-        self.logger.info(f"Deleting User with id={id}")
+        self.logger.info("Deleting User...")
         self.repository.delete_user(id)
