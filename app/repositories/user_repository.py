@@ -8,7 +8,7 @@ from app.entities.user import User
 class UserRepository:
     def __init__(self, db_connection: connection):
         self.logger = logging.getLogger(__name__)
-        self.db = db_connection()
+        self.db = db_connection
 
     def create_user(self, user: User) -> User:
         self.logger.info("Inserting a User...")
@@ -22,9 +22,9 @@ class UserRepository:
                     """,
                     (user.id, user.name, user.email, user.password),
                 )
-            self.db.commit()
-            self.logger.info(f"User {user.name} successfully inserted.")
-            return user
+                self.db.commit()
+                self.logger.info(f"User {user.name} successfully inserted.")
+                return user
 
         except IntegrityError as ex:
             self.db.rollback()
