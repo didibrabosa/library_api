@@ -8,8 +8,8 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 
-def get_user_service(requests: Request):
-    return requests.state.user_service
+def get_user_service(request: Request):
+    return request.state.user_service
 
 
 ServiceDep = Annotated[UserService, Depends(get_user_service)]

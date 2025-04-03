@@ -2,10 +2,11 @@ import psycopg2
 
 
 def get_db_connection():
-    conn = psycopg2.connect(
-        host="postgres_db",
+    db_connection = psycopg2.connect(
+        host="library_database",
         database="library",
         user="admin",
-        password="password"
+        password="password",
+        port=5432
     )
-    return conn
+    return db_connection
